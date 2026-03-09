@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFun 50 | Professional Master Catalog</title>
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --bg: #0d1117;
+            --card-bg: #161b22;
+            --text: #c9d1d9;
+            --tag-accion: #ff4d4d;
+            --tag-animacion: #00ff88;
+            --tag-comedia: #ffcc00;
+            --tag-drama: #a371f7;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0; padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(180deg, #1f2937 0%, var(--bg) 100%);
+        }
+
+        h1 { font-size: 3rem; margin: 0; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; }
+
+        .controls-container {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(13, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #30363d;
+            padding: 20px 0;
+        }
+
+        .filter-bar { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+        .filter-btn {
+            background: #21262d; border: 1px solid #30363d; color: white;
+            padding: 10px 22px; border-radius: 30px; cursor: pointer;
+            font-weight: bold; transition: 0.3s;
+        }
+
+        .filter-btn:hover { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        }
+
+        .filter-btn.active { background: var(--primary); color: black; border-color: var(--primary); }
+
+        #genre-info {
+            max-width: 1100px; margin: 30px auto; padding: 30px;
+            background: #1c2128; border-radius: 15px;
+            border-left: 8px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        #genre-info h2 { margin: 0 0 10px; color: white; }
+        #genre-info p { line-height: 1.6; color: #8b949e; margin-bottom: 20px; }
+        
+        .btn-info-ext {
+            display: inline-block; padding: 10px 20px; background: transparent;
+            border: 2px solid var(--primary); color: var(--primary);
+            text-decoration: none; border-radius: 8px; font-weight: bold; transition: 0.3s;
+        }
+
+        .btn-info-ext:hover { background: var(--primary); color: black; }
+
+        .container {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg); border-radius: 12px; border: 1px solid #30363d;
+            overflow: hidden; display: flex; flex-direction: column; transition: 0.3s ease-in-out;
+        }
+
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 20px rgba(0, 242, 255, 0.15); }
+        .hidden { display: none !important; }
+        .card img { width: 100%; height: 350px; object-fit: cover; background: #000; }
+        .content { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; }
+        .badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 6px; margin-bottom: 10px; width: fit-content; color: black; font-weight: 800; text-transform: uppercase; }
+        
+        .accion { background: var(--tag-accion); color: white; }
+        .animacion { background: var(--tag-animacion); }
+        .comedia { background: var(--tag-comedia); }
+        .drama { background: var(--tag-drama); color: white; }
+        
+        h3 { margin: 0 0 8px; font-size: 1.1rem; color: white; }
+        .desc { font-size: 0.85rem; color: #8b949e; margin-bottom: 15px; flex-grow: 1; }
+        .btn-link { background: var(--primary); color: #0d1117; text-decoration: none; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; }
+
+        #music-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; }
+        #music-toggle {
+            background: rgba(0, 242, 255, 0.1); border: 2px solid var(--primary);
+            color: var(--primary); width: 60px; height: 60px; border-radius: 50%;
+            cursor: pointer; font-size: 24px; display: flex; align-items: center;
+            justify-content: center; backdrop-filter: blur(5px); transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+        #music-toggle:hover { background: var(--primary); color: black; box-shadow: 0 0 25px var(--primary); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Stream<span style="color:white">Fun</span></h1>
+    <p>Software Engineering | 50 Legendary Productions</p>
+</header>
+
+<div class="controls-container">
+    <nav class="filter-bar">
+        <button class="filter-btn active" onclick="updateView('todos', this)">All</button>
+        <button class="filter-btn" onclick="updateView('accion', this)">Action</button>
+        <button class="filter-btn" onclick="updateView('animacion', this)">Animation</button>
+        <button class="filter-btn" onclick="updateView('comedia', this)">Comedy</button>
+        <button class="filter-btn" onclick="updateView('drama', this)">Drama</button>
+    </nav>
+</div>
+
+<section id="genre-info">
+    <h2 id="g-title">Welcome to the Catalog</h2>
+    <p id="g-desc">Explore 50 of the best productions in history. Select a genre to see its technical information.</p>
+    <a id="g-link" href="#" target="_blank" class="btn-info-ext" style="display:none;">View detailed information</a>
+</section>
+
+<main class="container">
+    <div class="card" data-genre="accion"><img src="img/1773025983859.jpg" alt="Rápidos"><div class="content"><span class="badge accion">Action</span><h3>Fast & Furious</h3><p class="desc">Speed, adrenaline, and global spy missions.</p><a href="https://www.justwatch.com/sv/buscar?q=Fast%20and%20Furious" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773025983857.jpg" alt="Avatar"><div class="content"><span class="badge accion">Action</span><h3>Avatar</h3><p class="desc">James Cameron's visual masterpiece in Pandora.</p><a href="https://www.justwatch.com/sv/buscar?q=Avatar" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773025983849.jpg" alt="Harry Potter"><div class="content"><span class="badge accion">Action</span><h3>Harry Potter</h3><p class="desc">The saga that defined modern fantasy cinema.</p><a href="https://www.justwatch.com/sv/buscar?q=Harry%20Potter" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773025983847.jpg" alt="Señor Anillos"><div class="content"><span class="badge accion">Action</span><h3>Lord of the Rings</h3><p class="desc">Tolkien's masterpiece adapted to the big screen.</p><a href="https://www.justwatch.com/sv/buscar?q=Lord%20of%20the%20Rings" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773025983842.jpg" alt="Star Wars"><div class="content"><span class="badge accion">Action</span><h3>Star Wars</h3><p class="desc">The space opera that changed cinema forever.</p><a href="https://www.justwatch.com/sv/buscar?q=Star%20Wars" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773025983839.jpg" alt="Jurassic Park"><div class="content"><span class="badge accion">Action</span><h3>Jurassic Park</h3><p class="desc">Dinosaurs created with revolutionary CGI.</p><a href="https://www.justwatch.com/sv/buscar?q=Jurassic%20Park" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773026351955.jpg" alt="Volver Futuro"><div class="content"><span class="badge accion">Action</span><h3>Back to the Future</h3><p class="desc">Time travel aboard an iconic DeLorean.</p><a href="https://www.justwatch.com/sv/buscar?q=Back%20to%20the%20Future" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773026351950.jpg" alt="Indiana Jones"><div class="content"><span class="badge accion">Action</span><h3>Indiana Jones</h3><p class="desc">The most famous archaeologist in adventure cinema.</p><a href="https://www.justwatch.com/sv/buscar?q=Indiana%20Jones" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773026351933.jpg" alt="Spiderman"><div class="content"><span class="badge accion">Action</span><h3>Spider-Man</h3><p class="desc">The wall-crawler facing his worst enemies.</p><a href="https://www.justwatch.com/sv/buscar?q=Spider-Man" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773026351930.jpg" alt="Avengers"><div class="content"><span class="badge accion">Action</span><h3>The Avengers</h3><p class="desc">The biggest hero crossover in Marvel cinema.</p><a href="https://www.justwatch.com/sv/buscar?q=Avengers" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773030039528.jpg" alt="Top Gun"><div class="content"><span class="badge accion">Action</span><h3>Top Gun: Maverick</h3><p class="desc">Aerial combat with extreme realism.</p><a href="https://www.justwatch.com/sv/buscar?q=Top%20Gun%20Maverick" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773033202695.jpg" alt="Mandalorian"><div class="content"><span class="badge accion">Action</span><h3>The Mandalorian</h3><p class="desc">A lone bounty hunter in the Star Wars universe.</p><a href="https://www.justwatch.com/sv/buscar?q=The%20Mandalorian" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773033202709.jpg" alt="Stranger"><div class="content"><span class="badge accion">Action</span><h3>Stranger Things</h3><p class="desc">Supernatural adventure and 80s nostalgia.</p><a href="https://www.justwatch.com/sv/buscar?q=Stranger%20Things" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773033202723.jpg" alt="Cobra Kai"><div class="content"><span class="badge accion">Action</span><h3>Cobra Kai</h3><p class="desc">Karate, honor, and the eternal rivalry revived.</p><a href="https://www.justwatch.com/sv/buscar?q=Cobra%20Kai" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773033202734.jpg" alt="Dr Who"><div class="content"><span class="badge accion">Action</span><h3>Doctor Who</h3><p class="desc">Iconic British sci-fi about time and space.</p><a href="https://www.justwatch.com/sv/buscar?q=Doctor%20Who" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773033202745.jpg" alt="Karate"><div class="content"><span class="badge accion">Action</span><h3>The Karate Kid</h3><p class="desc">Learning to fight for defense and growth.</p><a href="https://www.justwatch.com/sv/buscar?q=The%20Karate%20Kid" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773032741607.jpg" alt="ET"><div class="content"><span class="badge accion">Action</span><h3>E.T. The Extra-Terrestrial</h3><p class="desc">Friendship adventure between a boy and an alien.</p><a href="https://www.justwatch.com/sv/buscar?q=E.T." target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773032741610.jpg" alt="Mision"><div class="content"><span class="badge accion">Action</span><h3>Mission: Impossible</h3><p class="desc">High-risk espionage and real stunts.</p><a href="https://www.justwatch.com/sv/buscar?q=Mission%20Impossible" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773032741602.jpg" alt="Batman"><div class="content"><span class="badge accion">Action</span><h3>The Dark Knight</h3><p class="desc">The ultimate psychological duel: Batman vs Joker.</p><a href="https://www.justwatch.com/sv/buscar?q=The%20Dark%20Knight" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="accion"><img src="img/1773032741598.jpg" alt="Gladiador"><div class="content"><span class="badge accion">Action</span><h3>Gladiator</h3><p class="desc">Justice and honor in the Roman arena.</p><a href="https://www.justwatch.com/sv/buscar?q=Gladiator" target="_blank" class="btn-link">Watch in El Salvador</a></div></div>
+
+    <div class="card" data-genre="animacion"><img src="img/1773026351947.jpg" alt="Rey Leon"><div class="content"><span class="badge animacion">Animation</span><h3>The Lion King</h3><p class="desc">Animal drama about the circle of life.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773026351944.jpg" alt="Shrek"><div class="content"><span class="badge animacion">Animation</span><h3>Shrek</h3><p class="desc">The comedy that changed fairy tales.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773026351939.jpg" alt="Toy Story"><div class="content"><span class="badge animacion">Animation</span><h3>Toy Story</h3><p class="desc">The secret life of Pixar's toys.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773026351923.jpg" alt="Frozen"><div class="content"><span class="badge animacion">Animation</span><h3>Frozen</h3><p class="desc">Musical animated tale of sisterly love.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166981.png" alt="Intensamente"><div class="content"><span class="badge animacion">Animation</span><h3>Inside Out 2</h3><p class="desc">New emotions during puberty.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166976.jpg" alt="Mario"><div class="content"><span class="badge animacion">Animation</span><h3>Super Mario Bros.</h3><p class="desc">Epic adventure of the Nintendo plumber.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166973.jpg" alt="Bella"><div class="content"><span class="badge animacion">Animation</span><h3>Beauty and the Beast</h3><p class="desc">Disney's classic musical tale.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166968.jpg" alt="Gru"><div class="content"><span class="badge animacion">Animation</span><h3>Despicable Me</h3><p class="desc">Gru and his crazy Minion missions.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166965.jpg" alt="Nemo"><div class="content"><span class="badge animacion">Animation</span><h3>Finding Nemo</h3><p class="desc">Aquatic adventure across the ocean.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773029166962.jpg" alt="Simpsons"><div class="content"><span class="badge animacion">Animation</span><h3>The Simpsons</h3><p class="desc">Animated satire of the Springfield family.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="animacion"><img src="img/1773032741595.jpg" alt="Heidi"><div class="content"><span class="badge animacion">Animation</span><h3>Heidi</h3><p class="desc">The great retro classic from the Alps.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+
+    <div class="card" data-genre="comedia"><img src="img/1773025983833.jpg" alt="Pobre"><div class="content"><span class="badge comedia">Comedy</span><h3>Home Alone</h3><p class="desc">Kevin defends his house during Christmas.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773029166958.jpg" alt="Barbie"><div class="content"><span class="badge comedia">Comedy</span><h3>Barbie</h3><p class="desc">Pink satire about reality and fantasy.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773029166955.jpg" alt="Friends"><div class="content"><span class="badge comedia">Comedy</span><h3>Friends</h3><p class="desc">The most famous friendship sitcom.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773029166951.jpg" alt="Big Bang"><div class="content"><span class="badge comedia">Comedy</span><h3>The Big Bang Theory</h3><p class="desc">Brilliant physicists and nerd situations.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039588.jpg" alt="Office"><div class="content"><span class="badge comedia">Comedy</span><h3>The Office</h3><p class="desc">Absurd humor in a Scranton office.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039580.jpg" alt="Malcolm"><div class="content"><span class="badge comedia">Comedy</span><h3>Malcolm in the Middle</h3><p class="desc">Dysfunctional and highly funny family.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039575.jpg" alt="Modern"><div class="content"><span class="badge comedia">Comedy</span><h3>Modern Family</h3><p class="desc">Diverse family life in mockumentary style.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039571.jpg" alt="Chavo"><div class="content"><span class="badge comedia">Comedy</span><h3>El Chavo del 8</h3><p class="desc">Latino humor that transcends borders.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039568.jpg" alt="Seinfeld"><div class="content"><span class="badge comedia">Comedy</span><h3>Seinfeld</h3><p class="desc">The classic show about "nothing".</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="comedia"><img src="img/1773030039564.jpg" alt="Ted Lasso"><div class="content"><span class="badge comedia">Comedy</span><h3>Ted Lasso</h3><p class="desc">Football, optimism, and kindness.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+
+    <div class="card" data-genre="drama"><img src="img/1773025983854.jpg" alt="Titanic"><div class="content"><span class="badge drama">Drama</span><h3>Titanic</h3><p class="desc">Epic romance set in a historical tragedy.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039561.jpg" alt="Greys"><div class="content"><span class="badge drama">Drama</span><h3>Grey's Anatomy</h3><p class="desc">Intense and emotional medical drama.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039556.jpg" alt="Crown"><div class="content"><span class="badge drama">Drama</span><h3>The Crown</h3><p class="desc">The history of the British Crown.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039553.jpg" alt="House"><div class="content"><span class="badge drama">Drama</span><h3>Dr. House</h3><p class="desc">Medical mysteries and a cynical genius.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039550.jpg" alt="Sherlock"><div class="content"><span class="badge drama">Drama</span><h3>Sherlock</h3><p class="desc">Modern-day detective in London.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039544.jpg" alt="Lost"><div class="content"><span class="badge drama">Drama</span><h3>Lost</h3><p class="desc">Survival and mystery on the island.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039538.jpg" alt="Bridgerton"><div class="content"><span class="badge drama">Drama</span><h3>Bridgerton</h3><p class="desc">Romance and scandals in high society.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773030039534.jpg" alt="Suits"><div class="content"><span class="badge drama">Drama</span><h3>Suits</h3><p class="desc">Elite corporate lawyers in NYC.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+    <div class="card" data-genre="drama"><img src="img/1773032741591.jpg" alt="Gilmore"><div class="content"><span class="badge drama">Drama</span><h3>Gilmore Girls</h3><p class="desc">Family life in the town of Stars Hollow.</p><a href="#" class="btn-link">Watch in El Salvador</a></div></div>
+</main>
+
+<audio id="bg-music" loop>
+    <source src="mp3/5 Minute Timer Bomb _MISSION IMPOSSIBLE_ .m4a" type="audio/mp3">
+</audio>
+
+<div id="music-container">
+    <button id="music-toggle" onclick="toggleMusic()">🎵</button>
+</div>
+
+<script>
+    const genreData = {
+        todos: { t: "Full Catalog", d: "Explore 50 essential productions selected for you.", url: "" },
+        accion: { t: "Action & Adventure Cinema", d: "Relies on physical conflict and grand visual feats.", url: "https://en.wikipedia.org/wiki/Action_film" },
+        animacion: { t: "Animated Cinema", d: "A technique that gives the illusion of movement to drawings.", url: "https://en.wikipedia.org/wiki/Animation" },
+        comedia: { t: "Comedy Cinema", d: "A genre designed to provoke laughter and fun.", url: "https://en.wikipedia.org/wiki/Comedy_film" },
+        drama: { t: "Genre: Drama", d: "Explores the deepest emotional conflicts of human condition.", url: "https://en.wikipedia.org/wiki/Drama_(film_and_television)" }
+    };
+
+    function updateView(genre, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const info = genreData[genre];
+        document.getElementById('g-title').innerText = info.t;
+        document.getElementById('g-desc').innerText = info.d;
+        const link = document.getElementById('g-link');
+        if (genre === 'todos') { link.style.display = 'none'; } 
+        else { link.style.display = 'inline-block'; link.href = info.url; link.innerText = `Read more about ${info.t}`; }
+        document.querySelectorAll('.card').forEach(card => {
+            if (genre === 'todos' || card.getAttribute('data-genre') === genre) card.classList.remove('hidden');
+            else card.classList.add('hidden');
+        });
+    }
+
+    function toggleMusic() {
+        const audio = document.getElementById('bg-music');
+        const btn = document.getElementById('music-toggle');
+        audio.volume = 0.3;
+        if (audio.paused) {
+            audio.play();
+            btn.innerText = "⏸️";
+            btn.style.background = "var(--primary)";
+            btn.style.color = "black";
+        } else {
+            audio.pause();
+            btn.innerText = "🎵";
+            btn.style.background = "rgba(0, 242, 255, 0.1)";
+            btn.style.color = "var(--primary)";
+        }
+    }
+</script>
+
+</body>
+</html>
